@@ -102,7 +102,7 @@ while True:
     for i in range(1, 60):
         if keyboard[i][1] ==0:
             pygame.draw.rect(screen, (0,0,0), keyboard[i][0], 0)
-  # if melodys[0][0].time<=time.time()-starting:  # +修订值（半个循环时长）+(掉落时间)
+# if melodys[0][0].time<=time.time()-starting:  # +修订值（半个循环时长）+(掉落时间)
     pygame.display.flip()
     fps=fps_control(fps)
 
