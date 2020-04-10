@@ -9,12 +9,12 @@ class Set:
         self.width=1280
         self.height=720
         self.color=(54,52,51)
-        self.falling_rate=0.35  # 每多少帧向下落一像素
+        self.falling_rate=0.30  # 每多少帧向下落一像素
         self.whitekeyheight=120 #键盘上的黑白键长宽
         self.blackkeyheight=85
         self.whitekeywidth=36
         self.blackkeywidth=24
-        self.baseFPS=800
+        self.baseFPS=60
 sets=Set()
 
 class Note:

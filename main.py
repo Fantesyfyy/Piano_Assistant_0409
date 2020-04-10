@@ -32,7 +32,7 @@ class Fallingnotes(pygame.sprite.Sprite):
     '''创建掉落音符类'''
     def __init__(self,track,note):
         pygame.sprite.Sprite.__init__(self)
-        self.size = note.long/sets.falling_rate
+        self.size = (note.long/sets.falling_rate)/speedbyfps 
         self.track=track
         self.tone=note.tone
         self.velo=note.velo
@@ -49,14 +49,18 @@ class Fallingnotes(pygame.sprite.Sprite):
                 self.image =track1b_img
             else :
                 self.image = track1w_img
+        self.image = pygame.transform.scale(self.image,(keyboard[self.tone][0].width,int(self.size)))
         self.rect = self.image.get_rect()
         self.rect.centerx =keyboard[self.tone][0].centerx
-        self.rect.bottom=0
-        self.last_update =frame
+        self.rect.bottom = 0
+        self.floatbottom = 0
+        self.last_update = frame
+        
 
     def update(self):
         now = frame
-        self.rect.bottom+=(now - self.last_update)/sets.falling_rate
+        self.floatbottom+=(now - self.last_update)/sets.falling_rate
+        self.rect.bottom = int(self.floatbottom)
         self.last_update = now
         if self.rect.bottom-self.size>sets.height:
             self.kill()
@@ -69,13 +73,19 @@ def fps_control (fps):
     elif getfps-0.5>sets.baseFPS:
         fps-=0.1
     print(getfps,fps)
+    if getfps < 10:
+        getfps = 60
+    speedbyfps = perclick1*1.32*60/getfps
     return fps
+
 
 # 加载midi文件
 midiname='1.mid'
 mid = mido.MidiFile(path.join(sound_folder, midiname))  # 导入音乐mid文件
 perclick1 = (mid.tracks[0][3].clocks_per_click)
 melodys = readmidi(path.join(sound_folder, midiname))
+speedbyfps = perclick1*1.32  #越大越快
+
 
 frame=0
 fps=sets.baseFPS
@@ -96,7 +106,6 @@ while True:
     
     notegroup.update()
     notegroup.draw(screen)
-    
     for i in range(1,61):
         if keyboard[i][1]==1:
             pygame.draw.rect(screen, (255, 255, 240),keyboard[i][0],0)
@@ -105,7 +114,7 @@ while True:
         if keyboard[i][1] ==0:
             pygame.draw.rect(screen, (0,0,0), keyboard[i][0], 0)
     for i in range(0,tracksnum):
-        if melodys[i][ononit[i]].time <= frame:
+        if melodys[i][ononit[i]].time/speedbyfps <= frame:
             newfallingnote=Fallingnotes(i,melodys[i][ononit[i]])
             newfallingnote.add(notegroup)
             ononit[i]+=1
@@ -115,3 +124,5 @@ while True:
     pygame.display.flip()
     clock.tick(fps)
     fps=fps_control(fps)
+    
+    
