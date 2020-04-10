@@ -15,7 +15,7 @@ font_name = pygame.font.match_font('arial')
 
 sets=Set()
 pygame.init()
-screen = pygame.display.set_mode((sets.width,sets.height), DOUBLEBUF|HWSURFACE | FULLSCREEN, 32)
+screen = pygame.display.set_mode((sets.width,sets.height), DOUBLEBUF|HWSURFACE, 32)
 screen.fill(sets.color) #创建窗口，编辑窗口数据
 clock=pygame.time.Clock()
 
@@ -77,14 +77,15 @@ mid = mido.MidiFile(path.join(sound_folder, midiname))  # 导入音乐mid文件
 perclick1 = (mid.tracks[0][3].clocks_per_click)
 melodys = readmidi(path.join(sound_folder, midiname))
 
-
-
 frame=0
 fps=sets.baseFPS
 note1=Fallingnotes(0,melodys[0][0])
-note2=Fallingnotes(0,melodys[0][1])
 notegroup=pygame.sprite.Group(note1)
-note2.add(notegroup)
+tracksnum=len(melodys)
+ononit=[]
+for i in range(0,tracksnum):
+    # ordinal_number_of_notes_in_track
+    ononit.append(0)
 while True:
     frame+=1
     for event in pygame.event.get():
@@ -92,9 +93,10 @@ while True:
             # 接收到退出事件后退出程序
             exit()
     screen.fill(sets.color)
+    
     notegroup.update()
-
     notegroup.draw(screen)
+    
     for i in range(1,61):
         if keyboard[i][1]==1:
             pygame.draw.rect(screen, (255, 255, 240),keyboard[i][0],0)
@@ -102,8 +104,14 @@ while True:
     for i in range(1, 60):
         if keyboard[i][1] ==0:
             pygame.draw.rect(screen, (0,0,0), keyboard[i][0], 0)
-#     if melodys[0][0].time<=time.time()-starting:  # +修订值（半个循环时长）+(掉落时间)
-#
-    pygame.display.flip()
-    fps=fps_control(fps)
+    for i in range(0,tracksnum):
+        if melodys[i][ononit[i]].time <= frame:
+            newfallingnote=Fallingnotes(i,melodys[i][ononit[i]])
+            newfallingnote.add(notegroup)
+            ononit[i]+=1
 
+
+# if melodys[0][0].time<=time.time()-starting:  # +修订值（半个循环时长）+(掉落时间)
+    pygame.display.flip()
+    clock.tick(fps)
+    fps=fps_control(fps)
