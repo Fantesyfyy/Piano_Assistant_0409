@@ -75,7 +75,7 @@ def fps_control (fps):
     print(getfps,fps)
     if getfps < 10:
         getfps = 60
-    speedbyfps = perclick1*1.32*60/getfps
+    speedbyfps = perclick1*1.32889*60/getfps
     return fps
 
 
@@ -84,7 +84,7 @@ midiname='1.mid'
 mid = mido.MidiFile(path.join(sound_folder, midiname))  # 导入音乐mid文件
 perclick1 = (mid.tracks[0][3].clocks_per_click)
 melodys = readmidi(path.join(sound_folder, midiname))
-speedbyfps = perclick1*1.32  #越大越快
+speedbyfps = perclick1*1.32889  #越大越快
 
 
 frame=0
