@@ -1,9 +1,27 @@
+'''
+To do:
+35 add "|FULLSCREEN"
+fsize
+
+
+
+
+
+
+
+
+
+
+
+
+'''
 import  pygame
 import time
 import mido #导入头文件
 from settings import *
 from pygame.locals import * #导入设置文件
 from midireader import  *
+from Menu import *
 
 #获取图片库和声音库路径
 img_dir = path.join(path.dirname(__file__),'pic')
@@ -72,7 +90,7 @@ def fps_control (fps):
         fps+=0.1
     elif getfps-0.5>sets.baseFPS:
         fps-=0.1
-    print(getfps,fps)
+    # print(getfps,fps)
     if getfps < 10:
         getfps = 60
     speedbyfps = perclick1*1.32889*60/getfps
@@ -80,7 +98,7 @@ def fps_control (fps):
 
 
 # 加载midi文件
-midiname='1.mid'
+midiname=menu(screen)
 mid = mido.MidiFile(path.join(sound_folder, midiname))  # 导入音乐mid文件
 perclick1 = (mid.tracks[0][3].clocks_per_click)
 melodys = readmidi(path.join(sound_folder, midiname))
@@ -93,6 +111,7 @@ note1=Fallingnotes(0,melodys[0][0])
 notegroup=pygame.sprite.Group(note1)
 tracksnum=len(melodys)
 ononit=[]
+unemptytracks=list(range(0,tracksnum))
 for i in range(0,tracksnum):
     # ordinal_number_of_notes_in_track
     ononit.append(0)
@@ -102,6 +121,9 @@ while True:
         if event.type == QUIT:
             # 接收到退出事件后退出程序
             exit()
+        elif event.type == pygame.KEYDOWN :
+            if event.key == pygame.K_ESCAPE or event.key == pygame.K_BACKSPACE:
+                exit()
     screen.fill(sets.color)
     
     notegroup.update()
@@ -113,16 +135,21 @@ while True:
     for i in range(1, 60):
         if keyboard[i][1] ==0:
             pygame.draw.rect(screen, (0,0,0), keyboard[i][0], 0)
-    for i in range(0,tracksnum):
+    for i in unemptytracks:
         if melodys[i][ononit[i]].time/speedbyfps <= frame:
+            if melodys[i][ononit[i]].tone <= 0:
+                ononit[i]+=1
+                continue
             newfallingnote=Fallingnotes(i,melodys[i][ononit[i]])
             newfallingnote.add(notegroup)
-            ononit[i]+=1
+            if ononit[i] <len(melodys[i])-1: 
+                ononit[i]+=1
+            else:
+                unemptytracks.remove(i)
+            print(ononit[i],i,len(melodys[0]),len(melodys[1]))
 
 
 # if melodys[0][0].time<=time.time()-starting:  # +修订值（半个循环时长）+(掉落时间)
     pygame.display.flip()
     clock.tick(fps)
     fps=fps_control(fps)
-    
-    

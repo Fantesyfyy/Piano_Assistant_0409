@@ -15,6 +15,7 @@ class Set:
         self.whitekeywidth=36
         self.blackkeywidth=24
         self.baseFPS=60
+        self.font="simkai.ttf"
 sets=Set()
 
 class Note:
