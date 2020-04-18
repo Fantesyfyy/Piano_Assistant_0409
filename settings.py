@@ -1,11 +1,13 @@
 from os import path
-import  pygame
+import pygame
 import time
-import mido #导入头文件
-from pygame.locals import * #导入设置文件
+import mido  # 导入头文件
+from pygame.locals import *  # 导入设置文件
+
 
 class Set:
     def __init__(self):
+<<<<<<< HEAD
         self.width=1280
         self.height=720
         self.color=(54,204,218)
@@ -18,17 +20,33 @@ class Set:
         self.font="simkai.ttf"
         self.frontcolor=(255,255,220)
 sets=Set()
+=======
+        self.width = 1280
+        self.height = 720
+        self.color = (54, 52, 51)
+        self.falling_rate = 0.30  # 每多少帧向下落一像素
+        self.whitekeyheight = 120  # 键盘上的黑白键长宽
+        self.blackkeyheight = 85
+        self.whitekeywidth = 36
+        self.blackkeywidth = 24
+        self.baseFPS = 60
+        self.font = "simkai.ttf"
+
+
+sets = Set()
+
+>>>>>>> 489a19e46b50d798d8b70e97f604f15b9f1a5408
 
 class Note:
-    def __init__(self,tone,velo,time,long):
-        self.tone=tone
-        self.velo=velo
-        self.time=time  #按下时间
-        self.long=long  #时长
-        if self.tone%12 in  (1, 3, 5, 6, 8, 10, 0):
-            self.worb=1 #white/black black=0 white=1
-        else :
-            self.worb=0
+    def __init__(self, tone, velo, time, long):
+        self.tone = tone
+        self.velo = velo
+        self.time = time  # 按下时间
+        self.long = long  # 时长
+        if self.tone % 12 in (1, 3, 5, 6, 8, 10, 0):
+            self.worb = 1  # white/black black=0 white=1
+        else:
+            self.worb = 0
 
 
 def keyboard_init():
@@ -40,14 +58,15 @@ def keyboard_init():
     for i in range(1, 61):
         if i % 12 in (1, 3, 5, 6, 8, 10, 0):  # 是白键
             whitenum += 1
-            keyboard[i] = (Rect(-26 + whitenum * sets.whitekeywidth, sets.height-sets.whitekeyheight, sets.whitekeywidth, sets.whitekeyheight), 1)  # 后面一个数black=0,white=1
+            keyboard[i] = (Rect(-26 + whitenum * sets.whitekeywidth, sets.height-sets.whitekeyheight,
+                                sets.whitekeywidth, sets.whitekeyheight), 1)  # 后面一个数black=0,white=1
         else:
             blacknum += 1
             if blacknum % 5 in (3, 1):
                 black_position += sets.whitekeywidth*2
             else:
                 black_position += sets.whitekeywidth
-            keyboard[i] = (Rect(black_position, sets.height-sets.whitekeyheight, sets.blackkeywidth, sets.blackkeyheight), 0)
+            keyboard[i] = (Rect(black_position, sets.height-sets.whitekeyheight,
+                                sets.blackkeywidth, sets.blackkeyheight), 0)
     return keyboard
-
 
