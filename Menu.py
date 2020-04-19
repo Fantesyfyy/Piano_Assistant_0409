@@ -45,9 +45,11 @@ class Note():
         self.line=sets.height-random.randint(1,5)*20
     def update(self):
         if self.rect.bottom<self.line:
-            self.rect.top+=1
+            self.rect.top+=5
             
 def menu(screen,start=True):    #start为False,则不播放开场动画
+    clock=pygame.time.Clock()
+
     sets=settings.Set()
     fsize=60
     filelist = os.listdir('sounds')
@@ -82,7 +84,7 @@ def menu(screen,start=True):    #start为False,则不播放开场动画
     if start==True:
         cnt2=1
         for i in range(sets.width//60):
-            noteimgs.append(Note(noteimg,i*60,i*200,sets))
+            noteimgs.append(Note(noteimg,i*60,i*20,sets))
         Title=pygame.font.Font(sets.font,80).render('钢琴助手',True,sets.frontcolor)
         while True:
             screen.fill(sets.color)
@@ -109,7 +111,7 @@ def menu(screen,start=True):    #start为False,则不播放开场动画
             cnt+=1
             for j in range(5):
                 pygame.draw.line(screen,(255,255,255),(0,sets.height-(j+1)*20),(sets.width,sets.height-(j+1)*20))
-
+            clock.tick(60)
             pygame.display.flip()
 
     while True:
@@ -179,4 +181,5 @@ def menu(screen,start=True):    #start为False,则不播放开场动画
 
         if done==500:
             return filelist[curlist[1]]
+        clock.tick(60)
         pygame.display.flip()
