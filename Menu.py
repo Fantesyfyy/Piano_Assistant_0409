@@ -7,40 +7,24 @@ class Option():
     def __init__(self,text):
         self.text=text
         self.size=0
-<<<<<<< HEAD
         self.color=(255,199,38)
-=======
-        self.color=(30,144,255)
->>>>>>> 489a19e46b50d798d8b70e97f604f15b9f1a5408
         self.surface=None
         self.rect=None
     def resize(self,num,pos,fsize,sets):        #重新确定位置和大小
         if num>=0:
             if num==1:
-<<<<<<< HEAD
                 self.size=1.5*fsize
                 self.color=(255,199,38)
             else:
                 self.size=fsize
                 self.color=(246,231,97)
-=======
-                self.size=2*fsize
-                self.color=(30,144,255)
-            else:
-                self.size=fsize
-                self.color=(65,105,225)
->>>>>>> 489a19e46b50d798d8b70e97f604f15b9f1a5408
         else:
             if num==-2:
                 self.size=int(fsize*1.8)
             else:
                 self.size=fsize//3
                 self.color=None
-<<<<<<< HEAD
         self.surface=pygame.font.Font(sets.font,int(self.size)).render(self.text,True,sets.frontcolor,self.color)
-=======
-        self.surface=pygame.font.Font(sets.font,self.size).render(self.text,True,(255,255,255),self.color)
->>>>>>> 489a19e46b50d798d8b70e97f604f15b9f1a5408
         self.surface.set_alpha(255)
         self.rect=self.surface.get_rect()
         if num>=0:
@@ -79,11 +63,7 @@ def menu(screen,start=True):    #start为False,则不播放开场动画
     noteimgs=[]
     menutext.append(Option('A、D选择，enter确认'))
     menutext.append(Option('esc取消，enter开始'))
-<<<<<<< HEAD
     startbutton=Option(' 开始 ')
-=======
-    startbutton=Option('开始')
->>>>>>> 489a19e46b50d798d8b70e97f604f15b9f1a5408
     startbutton.resize(1,pos,fsize,sets)
 
     for i in menutext:
@@ -102,11 +82,7 @@ def menu(screen,start=True):    #start为False,则不播放开场动画
         cnt2=1
         for i in range(sets.width//60):
             noteimgs.append(Note(noteimg,i*60,i*200,sets))
-<<<<<<< HEAD
         Title=pygame.font.Font(sets.font,80).render('钢琴助手',True,sets.frontcolor)
-=======
-        Title=pygame.font.Font(sets.font,60).render('F.U.C.K.钢琴助手',True,(255,255,255))
->>>>>>> 489a19e46b50d798d8b70e97f604f15b9f1a5408
         while True:
             screen.fill(sets.color)
             for event in pygame.event.get():
@@ -124,22 +100,14 @@ def menu(screen,start=True):    #start为False,则不播放开场动画
                     cnt=1
                     break
             screen.blit(startbutton.surface,startbutton.rect)
-<<<<<<< HEAD
             screen.blit(Title,((sets.width-Title.get_rect().width)//2,100))
-=======
-            screen.blit(Title,((sets.width-Title.get_rect().width)//2,0))
->>>>>>> 489a19e46b50d798d8b70e97f604f15b9f1a5408
             for note in noteimgs:
                 if note.num<=cnt:
                     note.update()
                 screen.blit(note.surface,note.rect)
             cnt+=1
             for j in range(5):
-<<<<<<< HEAD
                 pygame.draw.line(screen,(255,255,255),(0,sets.height-(j+1)*20),(sets.width,sets.height-(j+1)*20))
-=======
-                pygame.draw.line(screen,(0,0,0),(0,sets.height-(j+1)*20),(sets.width,sets.height-(j+1)*20))
->>>>>>> 489a19e46b50d798d8b70e97f604f15b9f1a5408
 
             pygame.display.flip()
 
