@@ -81,6 +81,7 @@ class Fallingnotes(pygame.sprite.Sprite):
         self.rect.bottom = 0
         self.floatbottom = 0
         self.last_update = frame
+<<<<<<< HEAD
 
     '''def update(self):
         now = frame
@@ -93,6 +94,8 @@ class Fallingnotes(pygame.sprite.Sprite):
         self.floatbottom = 0
         self.last_update = frame'''
 
+=======
+>>>>>>> 0c5167d541a3eeeebb2d4af4f3c9ee3622db1039
     def update(self):
         now = frame
         self.floatbottom += (now - self.last_update)/sets.falling_rate
