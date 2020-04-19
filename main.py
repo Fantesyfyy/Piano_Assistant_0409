@@ -82,7 +82,7 @@ class Fallingnotes(pygame.sprite.Sprite):
         self.floatbottom = 0
         self.last_update = frame
 
-    def update(self):
+    '''def update(self):
         now = frame
         self.floatbottom += (now - self.last_update)/sets.falling_rate
         self.image = pygame.transform.scale(
@@ -91,7 +91,7 @@ class Fallingnotes(pygame.sprite.Sprite):
         self.rect.centerx = keyboard[self.tone][0].centerx
         self.rect.bottom = 0
         self.floatbottom = 0
-        self.last_update = frame
+        self.last_update = frame'''
 
     def update(self):
         now = frame

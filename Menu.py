@@ -2,6 +2,7 @@ import pygame
 import os
 import settings
 import random
+from os import path
 
 class Option():
     def __init__(self,text):
@@ -56,7 +57,7 @@ def menu(screen,start=True):    #start为False,则不播放开场动画
     done=0
     selected2=False
     menutext=[]
-    noteimg=[pygame.image.load(r'pic\note1.png'),pygame.image.load(r'pic\note2.png')]
+    noteimg=[pygame.image.load(path.join(path.join(path.dirname(__file__), 'pic'),'note1.png')),pygame.image.load(path.join(path.join(path.dirname(__file__), 'pic'),'note2.png'))]
     pos=[(sets.width//4,sets.height//2-fsize),(sets.width//2,sets.height//2+fsize//2-10),(3*(sets.width//4),sets.height//2-fsize)]
     cnt=1
     anim=0
