@@ -20,7 +20,7 @@ class Option():
                 self.color=(246,231,97)
         else:
             if num==-2:
-                self.size=int(fsize*1.8)
+                self.size=int(fsize*1.3)
             else:
                 self.size=fsize//3
                 self.color=None
@@ -61,8 +61,8 @@ def menu(screen,start=True):    #start为False,则不播放开场动画
     cnt=1
     anim=0
     noteimgs=[]
-    menutext.append(Option('A、D选择，enter确认'))
-    menutext.append(Option('esc取消，enter开始'))
+    menutext.append(Option('A、D选择，Enter确认,Esc退出'))
+    menutext.append(Option('Esc取消，Enter开始'))
     startbutton=Option(' 开始 ')
     startbutton.resize(1,pos,fsize,sets)
 
@@ -128,7 +128,10 @@ def menu(screen,start=True):    #start为False,则不播放开场动画
                         move=1
                         selected=False
                     if event.key==pygame.K_ESCAPE:
-                        selected=False
+                        if selected==True:
+                            selected=False
+                        else:
+                            exit()
 
                 if event.key==pygame.K_RETURN:
                     anim=1
@@ -159,7 +162,7 @@ def menu(screen,start=True):    #start为False,则不播放开场动画
         if cnt==100 and anim==1:        #结束动画
             cnt=1
             anim=0
-            midilist[curlist[1]].resize(1,pos,fsize,sets)
+            #midilist[curlist[1]].resize(1,pos,fsize,sets)
         if selected2==True:
             if midilist[curlist[1]].surface.get_alpha!=0:
                 midilist[curlist[1]].surface.set_alpha(midilist[curlist[1]].surface.get_alpha()-1)

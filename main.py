@@ -114,74 +114,83 @@ def fps_control(fps):
         getfps = 60
     speedbyfps = speedbymidi*24*1.32889*60/getfps
     return fps
-
-
+in_game_exit=0
+choose=0
 # 加载midi文件
-midiname = menu(screen)
-mid = mido.MidiFile(path.join(sound_folder, midiname))  # 导入音乐mid文件
-perclick1 = 24
-n32npb = 8
-for i, track in enumerate(mid.tracks):
-    for msg in track:
-        if msg.is_meta:
-            if msg.type == 'time_signature':
-                perclick1 = msg.clocks_per_click
-                n32npb = msg.notated_32nd_notes_per_beat
-        # if hasattr(mid.tracks[i][j], 'clocks_per_click'):
-        #    perclick1 = (mid.tracks[i][j].clocks_per_click)
-speedbymidi = 3*n32npb/perclick1
-print(speedbymidi)
-melodys = readmidi(path.join(sound_folder, midiname))
-speedbyfps = speedbymidi*24*1.32889  # 越大越快
-sets.falling_rate *= 1
-
-
-frame = 0
-fps = sets.baseFPS
-notegroup = pygame.sprite.Group()
-tracksnum = len(melodys)
-ononit = []
-unemptytracks = list(range(0, tracksnum))
-for i in range(0, tracksnum):
-    # ordinal_number_of_notes_in_track
-    ononit.append(0)
 while True:
-    frame += 1
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            # 接收到退出事件后退出程序
-            exit()
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE or event.key == pygame.K_BACKSPACE:
+    if choose==0:
+        midiname = menu(screen)
+    else:
+        midiname=menu(screen,False)
+
+    mid = mido.MidiFile(path.join(sound_folder, midiname))  # 导入音乐mid文件
+    perclick1 = 24
+    n32npb = 8
+    for i, track in enumerate(mid.tracks):
+        for msg in track:
+            if msg.is_meta:
+                if msg.type == 'time_signature':
+                    perclick1 = msg.clocks_per_click
+                    n32npb = msg.notated_32nd_notes_per_beat
+            # if hasattr(mid.tracks[i][j], 'clocks_per_click'):
+            #    perclick1 = (mid.tracks[i][j].clocks_per_click)
+    speedbymidi = 3*n32npb/perclick1
+    print(speedbymidi)
+    melodys = readmidi(path.join(sound_folder, midiname))
+    speedbyfps = speedbymidi*24*1.32889  # 越大越快
+    sets.falling_rate *= 1
+
+
+    frame = 0
+    fps = sets.baseFPS
+    notegroup = pygame.sprite.Group()
+    tracksnum = len(melodys)
+    ononit = []
+    unemptytracks = list(range(0, tracksnum))
+    for i in range(0, tracksnum):
+        # ordinal_number_of_notes_in_track
+        ononit.append(0)
+    while True:
+        frame += 1
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                # 接收到退出事件后退出程序
                 exit()
-    screen.fill(sets.color)
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE or event.key == pygame.K_BACKSPACE:
+                    in_game_exit=1
+        if in_game_exit==1:
+            in_game_exit=0
+            choose=1
+            break
+        screen.fill(sets.color)
 
-    notegroup.update()
-    notegroup.draw(screen)
-    keyboard_color_change(notegroup,keyboard)
+        notegroup.update()
+        notegroup.draw(screen)
+        keyboard_color_change(notegroup,keyboard)
 
-    for i in range(1, 61):
-        if keyboard[i][1] == 1:
-            pygame.draw.rect(screen, keyboard[i][2], keyboard[i][0], 0)
-            pygame.draw.rect(screen, (0, 0, 0), keyboard[i][0], 1)
-    for i in range(1, 60):
-        if keyboard[i][1] == 0:
-            pygame.draw.rect(screen, keyboard[i][2], keyboard[i][0], 0)
-    for i in unemptytracks:
-        if melodys[i][ononit[i]].time/speedbyfps <= frame:
-            if melodys[i][ononit[i]].tone <= 0:
-                ononit[i] += 1
-                continue
-            newfallingnote = Fallingnotes(i, melodys[i][ononit[i]])
-            newfallingnote.add(notegroup)
-            if ononit[i] < len(melodys[i])-1:
-                ononit[i] += 1
-            else:
-                unemptytracks.remove(i)
-            print(ononit[i], i, len(melodys[0]), len(melodys[1]))
+        for i in range(1, 61):
+            if keyboard[i][1] == 1:
+                pygame.draw.rect(screen, keyboard[i][2], keyboard[i][0], 0)
+                pygame.draw.rect(screen, (0, 0, 0), keyboard[i][0], 1)
+        for i in range(1, 60):
+            if keyboard[i][1] == 0:
+                pygame.draw.rect(screen, keyboard[i][2], keyboard[i][0], 0)
+        for i in unemptytracks:
+            if melodys[i][ononit[i]].time/speedbyfps <= frame:
+                if melodys[i][ononit[i]].tone <= 0:
+                    ononit[i] += 1
+                    continue
+                newfallingnote = Fallingnotes(i, melodys[i][ononit[i]])
+                newfallingnote.add(notegroup)
+                if ononit[i] < len(melodys[i])-1:
+                    ononit[i] += 1
+                else:
+                    unemptytracks.remove(i)
+                print(ononit[i], i, len(melodys[0]), len(melodys[1]))
 
 
-# if melodys[0][0].time<=time.time()-starting:  # +修订值（半个循环时长）+(掉落时间)
-    pygame.display.flip()
-    clock.tick(fps)
-    fps = fps_control(fps)
+    # if melodys[0][0].time<=time.time()-starting:  # +修订值（半个循环时长）+(掉落时间)
+        pygame.display.flip()
+        clock.tick(fps)
+        fps = fps_control(fps)
