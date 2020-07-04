@@ -43,3 +43,5 @@ def readmidi(file):
         melody = []
         time = 0
     return melodys
+
+

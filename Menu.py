@@ -168,8 +168,8 @@ def menu(screen,start=True):    #start为False,则不播放开场动画
             #midilist[curlist[1]].resize(1,pos,fsize,sets)
         if selected2==True:
             if midilist[curlist[1]].surface.get_alpha!=0:
-                midilist[curlist[1]].surface.set_alpha(midilist[curlist[1]].surface.get_alpha()-1)
-            done+=1
+                midilist[curlist[1]].surface.set_alpha(midilist[curlist[1]].surface.get_alpha()-10)
+            done+=10
         for miditag in curlist:         #绘图
             if miditag>-1 and miditag<len(midilist) and curlist.index(miditag)!=1:
                 screen.blit(midilist[miditag].surface,midilist[miditag].rect)

@@ -124,15 +124,24 @@ while True:
     mid = mido.MidiFile(path.join(sound_folder, midiname))  # 导入音乐mid文件
     perclick1 = 24
     n32npb = 8
+    usPerBeat=500000
+    tickPerBeat=120
     for i, track in enumerate(mid.tracks):
         for msg in track:
             if msg.is_meta:
                 if msg.type == 'time_signature':
                     perclick1 = msg.clocks_per_click
                     n32npb = msg.notated_32nd_notes_per_beat
+                if msg.type=='set_tempo':
+                    usPerBeat=msg.tempo#每拍多少微秒
             # if hasattr(mid.tracks[i][j], 'clocks_per_click'):
             #    perclick1 = (mid.tracks[i][j].clocks_per_click)
-    speedbymidi = 3*n32npb/perclick1
+    beatPerSec=1000000/usPerBeat
+    if hasattr(mid, 'ticks_per_beat'):
+        tickPerBeat = mid.ticks_per_beat
+    tickPerSec=beatPerSec*tickPerBeat
+    print(tickPerSec)
+    speedbymidi = tickPerSec/960 #与测试曲的比值
     print(speedbymidi)
     melodys = readmidi(path.join(sound_folder, midiname))
     speedbyfps = speedbymidi*24*1.32889  # 越大越快
@@ -156,6 +165,7 @@ while True:
                 exit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE or event.key == pygame.K_BACKSPACE:
+                    keyboard=keyboard_init()
                     in_game_exit=1
         if in_game_exit==1:
             in_game_exit=0
@@ -185,7 +195,7 @@ while True:
                     ononit[i] += 1
                 else:
                     unemptytracks.remove(i)
-                print(ononit[i], i, len(melodys[0]), len(melodys[1]))
+                #print(ononit[i], i, len(melodys[0]), len(melodys[1]))
 
 
     # if melodys[0][0].time<=time.time()-starting:  # +修订值（半个循环时长）+(掉落时间)
