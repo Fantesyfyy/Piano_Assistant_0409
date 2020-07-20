@@ -2,7 +2,7 @@ from midireader import *
 import settings
 import os
 
-def purify(file,th_tone=12,th_long=10,ori=480): #不用看
+def purify(file,th_tone=24,th_long=10,ori=480): #不用看
     raw=readmidi(file)
     tpb=read_tpb(file)
     cooked=[]
