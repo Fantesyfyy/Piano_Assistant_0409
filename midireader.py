@@ -2,13 +2,6 @@ import mido
 from settings import *
 
 
-class Note:
-    def __init__(self, tone, velo, time, long):
-        self.tone = tone
-        self.velo = velo
-        self.time = time  # 按下时间
-        self.long = long  # 时长
-
 
 def readmidi(file):
     mid = mido.MidiFile(file)
@@ -45,3 +38,5 @@ def readmidi(file):
     return melodys
 
 
+def read_tpb(file):
+    return mido.MidiFile(file).ticks_per_beat

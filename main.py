@@ -213,7 +213,7 @@ while True:
                     unemptytracks.remove(i)
                 #print(ononit[i], i, len(melodys[0]), len(melodys[1]))
 
-        if notegroup==[]:
+        if len(notegroup)==0:
             break
         pygame.display.flip()
         clock.tick(fps)

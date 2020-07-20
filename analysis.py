@@ -1,5 +1,6 @@
 from midireader import *
 import settings
+import os
 
 def purify(file,th_tone=12,th_long=10,ori=480): #不用看
     raw=readmidi(file)
@@ -18,7 +19,13 @@ def purify(file,th_tone=12,th_long=10,ori=480): #不用看
         cooked.append(note)
     return cooked
 
-def compare(melodys,ingredient,ori=480): #计算分数 ori是原曲的tick_per_beat,可不传参
+def w2m():
+    os.system('waon\waon.exe -i output.wav')
+    time.sleep(8)
+
+def compare(melodys,ori=480): #计算分数 ori是原曲的tick_per_beat,可不传参
+    w2m()
+    ingredient=r'output.mid'
     cooked=purify(ingredient,ori=ori)
     temp=[]
     threshold=50
@@ -36,3 +43,5 @@ def compare(melodys,ingredient,ori=480): #计算分数 ori是原曲的tick_per_b
                     cnt+=1
                     cooked=cooked[j+1:]
     return ((100-int(cnt/len(temp)*100))//17)*10+int(cnt/len(temp)*100)
+
+
