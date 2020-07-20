@@ -18,6 +18,7 @@ class Set:
         self.baseFPS = 60
         self.font = "simkai.ttf"
         self.frontcolor = (255, 255, 220)
+        self.sampleRate=44100 #录音采样率 有CD44100 DVD48000
 
 
 sets = Set()
@@ -59,6 +60,7 @@ def keyboard_init():
 
 
 def keyboard_color_change(notegroup, keyboard):
+    startRecording=0
     for notei in notegroup:
         if notei.worb == 0:
             keyboard[notei.tone][2] = (0, 0, 0)
@@ -66,6 +68,7 @@ def keyboard_color_change(notegroup, keyboard):
             keyboard[notei.tone][2] = (255, 255, 240)
     for notei in notegroup:
         if notei.rect.bottom > sets.height-sets.whitekeyheight and notei.rect.top < sets.height-sets.whitekeyheight:
+            startRecording=1
             if notei.worb == 0:
                 if notei.track == 0:
                     keyboard[notei.tone][2] = (0, 0, 160)
@@ -77,3 +80,4 @@ def keyboard_color_change(notegroup, keyboard):
                 else:
                     keyboard[notei.tone][2] = (255, 215, 215)
                     # 后一位深蓝=(0,0,130)，深红=(130,0,0)，浅蓝=(220,220,255)，浅红=(255,215,215)
+    return startRecording

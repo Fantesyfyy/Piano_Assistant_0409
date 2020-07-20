@@ -22,6 +22,8 @@ from settings import *
 from pygame.locals import *  # 导入设置文件
 from midireader import *
 from Menu import *
+import sounddevice as sd
+from scipy.io.wavfile import write
 
 # 获取图片库和声音库路径
 img_dir = path.join(path.dirname(__file__), 'pic')
@@ -157,8 +159,19 @@ while True:
     for i in range(0, tracksnum):
         # ordinal_number_of_notes_in_track
         ononit.append(0)
-    while True:
+
+    longestTimeByTicks=0
+    for i in unemptytracks:
+        if melodys[i][-1].time+melodys[i][-1].long>longestTimeByTicks:
+            longestTimeByTicks=melodys[i][-1].time+melodys[i][-1].long
+    melodyTimeBySec=int(0.5+longestTimeByTicks/tickPerSec)#计算曲长（秒）
+    
+    global startRecording    #录音开始的标志
+    startRecording=0
+
+    while True:  #核心循环
         frame += 1
+
         for event in pygame.event.get():
             if event.type == QUIT:
                 # 接收到退出事件后退出程序
@@ -175,7 +188,10 @@ while True:
 
         notegroup.update()
         notegroup.draw(screen)
-        keyboard_color_change(notegroup,keyboard)
+        startRecording+=keyboard_color_change(notegroup,keyboard)#开始录音判定&琴键变色
+        if startRecording==1:
+            myrecording = sd.rec(melodyTimeBySec*sets.sampleRate, samplerate=sets.sampleRate, channels=2)
+            print("strat recording")
 
         for i in range(1, 61):
             if keyboard[i][1] == 1:
@@ -197,8 +213,11 @@ while True:
                     unemptytracks.remove(i)
                 #print(ononit[i], i, len(melodys[0]), len(melodys[1]))
 
-
-    # if melodys[0][0].time<=time.time()-starting:  # +修订值（半个循环时长）+(掉落时间)
+        if notegroup==[]:
+            break
         pygame.display.flip()
         clock.tick(fps)
         fps = fps_control(fps)
+    sd.wait()  # Wait until recording is finished
+    print("End recording")
+    write('output.wav', sets.sampleRate, myrecording)  # Save as WAV file    
