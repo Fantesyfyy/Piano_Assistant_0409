@@ -63,7 +63,7 @@ def cal_score(screen,melodys):
     #screen = pygame.display.set_mode((sets.width, sets.height), DOUBLEBUF | HWSURFACE, 32)
 
     textobjs=[]
-    score=analysis.compare(melodys)
+    score=int((100+analysis.compare(melodys))/2)
     textobjs.append(textobj("演奏完成",90,((sets.width/2),(sets.height/2.5))))
     textobjs.append(textobj(f"最终得分:{score}",90,((sets.width/2),(sets.height/2.5)+90)))
     textobjs.append(textobj('按下Esc返回曲目选择',30,((sets.width/2),15)))

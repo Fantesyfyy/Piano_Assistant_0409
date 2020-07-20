@@ -24,6 +24,7 @@ from midireader import *
 from Menu import *
 import sounddevice as sd
 from scipy.io.wavfile import write
+import finish
 
 # 获取图片库和声音库路径
 img_dir = path.join(path.dirname(__file__), 'pic')
@@ -221,3 +222,4 @@ while True:
     sd.wait()  # Wait until recording is finished
     print("End recording")
     write('output.wav', sets.sampleRate, myrecording)  # Save as WAV file    
+    finish.cal_score(screen,melodys)

@@ -20,7 +20,7 @@ def purify(file,th_tone=12,th_long=10,ori=480): #不用看
     return cooked
 
 def w2m():
-    os.system('waon\waon.exe -i output.wav')
+    os.system('.\waon\waon.exe -i output.wav')
     time.sleep(8)
 
 def compare(melodys,ori=480): #计算分数 ori是原曲的tick_per_beat,可不传参
